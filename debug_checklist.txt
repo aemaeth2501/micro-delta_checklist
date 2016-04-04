@@ -1,0 +1,73 @@
+Bonjour à tous,
+
+Malgré un petit soucis de fil qui a cassé dans le pneufit du core (impossible de retirer le bowden ==> débranchement) j'ai pu bosser un peu sur mon souci de hauteur de tête. Le symptôme principal est une sorte de "roulis" mettant la tête trop haut d'un côté et trop bas sur les deux autres tours.
+Spoiler : cela semble réglé ! \o/
+
+Voici donc les étapes de checks réalisées (compter près de 4h pour faire le tour. Cela m'a pris 1 semaine car après chaque check je faisait un cycle calibration + tests pour voir si le correctif en question marchait).
+Ces checks sont extrait des différents posts du forum et de retours SAV de eMotionTech, ainsi que de mes petites expériences :
+
+Structure
+Plateaux:
+Hauteur des plateau : vérifier (au mm près si possible) que le hauteur de plateau respecte bien les valeurs préconisée (39.8 cm)
+Orthogonalité de la structure une équerre d'écolier est largement suffisante, vérifier chaque guidage
+Planéité : l'utilisation de miroirs rond est une bonne chose. Le cas échéant, utiliser la tranche d'un réglet métallique pour s'assurer de la planéité (côtés et médianes du plateau). Sinon, cales.
+Guidages:
+S'assurer qu'il n'y a aucun débris/déchet pouvant encrasser les roulements
+Vérifier qu'il y a peu de frottements sur les guidages (enlever les serre-câbles d'un coté d'un chariot, faire bouger les roulements tout le long de l'axe)
+Biellettes :
+Vérifier au besoin la longueur de l'arbre des biellettes (ne pas essayer de prendre l'entraxe, trop peu fiable manuellement, mais bien la longueur de l'arbre sous fixations)
+Vérifier le serrage des biellettes côté core et chariot (il ne doit pas y avoir de jeu)
+S'assurer que le bowden ou autre n'interfère pas avec le déplacement des biellettes
+Chariots : (mon problème était majoritairement de ce fait là)
+Bien bien fixer les chariots aux roulements ! J'ai acheté des serres-câbles plus larges pour m'en assurer. Faire le serrage des roulements avec la vis centrale légèrement desserrée pour pouvoir serrer un poil plus.
+Vérifier qu'une fois le tout assemblé (avec courroies et roulements), aucune pièce n'ai de jeu. Serrer la vis centrale du chariot.
+ATTENTION : Plus le système de fixation des biellettes est serré, plus le bas du chariot va avoir tendance a avoir du jeu (il faut donc gérer les deux serrages conjointement)
+En fin de course, s'assurer que les roulement de viennent pas "taper" sur le haut du plateau (haut du chariot = haut du roulement)
+Courroies/Poulies :
+Pas tendues au point de les déformer, mais suffisamment.
+Retendre une courroie sur une tour = relever la tête vers la tour. Il est donc possible d'ajuster en live la tension des courroies. Pour ma part, j'ai pris une pièce mettant bien en évidence les symptômes, sorti le fil plastique, réglé la température d'extrusion à température ambiante, et lancé "l'impression" avec une feuille de papier sur le plateau. Si effectivement il y a blocage de la feuille à un endroit, pause de l'impression pour retendre la courroie de la tour incriminée. Une fois fait : stop de l’impression et calibration avec le plugin (+ centre). Puis on refait des cycles.
+C'est chronophage mais permet de régler au mieux la tension selon moi.
+Vérifier le serrage des poulies sur les moteurs. Concernant la position (3mm entre le bout de la poulie et le bout de l'axe moteur), j'ai utilisé la partie "tige" de mon pied à coulisse qui permet après blocage une répétabilité de la mesure.
+Vérifier le serrage des capteurs de fin de course
+Core :
+Vérifier qu'il n'y ait aucun jeu sur la fixation de la hot-end
+Vérifier le serrage des biellettes (tendance à se dévisser après des mouvements rapides : j'ai mis du frein-filet)
+Chemin de cable/bowden :
+Vérifier que le bowden est bien coupé à 35cm
+S'assurer que le chemin de cable ne vient pas faire effet ressort (une fois le core en haut) ou ne vient pas "tirer" le core (une fois ce dernier en bas).
+Electronique :
+Méplat des vis des stepsitcks en haut
+Vérifier le voltage délivré par les stepsticks : devrait être compris entre 0.8 et 1.2V. Le "+" au centre de la vis de réglage du stepstick et la masse sur le "-" d'une prise ventilo.
+Soft/Calibration
+Calibration avec plugin suffisante. Il est cependant possible de "tricher". Si l'on sais qu'un tour a tendance à être trop proche du plateau, remonter de 0.05 ou plus en fonction du défaut (dans mon cas près de 0.15)
+Je renvoie au super post de zabadu, qui présente un très bonne technique pour rattraper une éventuelle concavité (ou convexité) du plateau aluminium (non présente avec un plateau verre):
+Quote
+zabadu
+Pour les soucis d'accroche, j'en avais jusqu'à je me motive à faire une calibration un peu plus complète du plateau, sans me contenter des trois points habituels du plugin EmotionTech.C'est la procédure classique donnée un peu partout pour les "delta" donc pour une majorité d'entre vous ce ne sera pas une découverte. Mais pour les nouveaux comme moi, ça peut aider!
+
+Le plugin aide d'ailleurs bien pour accélérer la calibration:
+- prise des trois points du plugin: les trois Tower endstop offset sont alors réglés
+- test du point central, toujours avec une feuille de papier, en descendant manuellement la buse à Z=5mm puis en descendant pas à pas jusqu'au Z=0: si ça touche trop tôt (avant que Z soit nul) ou si ça ne touche pas (buse au-dessus du plateau pour Z=0), il faut régler le "Horizontal Rod Radius at 0,0" dans l'EEPROM (accès en tapant alt-E dans Repetier Host): chez moi il était à 65,500mm de base.
+- si la buse est trop basse et défonce le plateau, diminuer ce paramètre de 1mm,
+- si la buse est trop haute et ne touche pas le plateau, augmenter de 1mm (c'était mon cas: plateau concave)
+
+Après, renvoyer l'imprimante au "home" (en haut), relancer le plugin pour prendre les 3 points habituels, et refaire le test du point central.
+
+On procède comme ça de manière itérative jusqu'à ce que les quatre points soient tous nickel. Il m'a fallu trois cycles de calibration comme ci-dessus.
+
+Ensuite, plus un seul problème d'accroche en PLA, avec une première couche qui est juste ce qu'il faut, partout sur le plateau.
+Je rajouterais juste une emphase sur le fait que TOUTE modification de valeur géométrique dans le firmware donc obligatoirement être suivie d'une calibration avec le plugin.
+Calibration toujours avec les élements en chauffe (surtout le plateau car l'alu a tendance à se déformer sous chaleur, et le core car une goutte de plastique peut venir fausser la calibration)
+
+Le tout m'a permis d'avoir une première couche correcte (en théorique, je ne peux pas extruder encore xD).
+
+N'hésitez pas à enrichir la liste (je ne suis concentré que sur les aspects me permettant de régler mon souci) et de me corriger si j'ai dit une bêtise : je débute dans le monde de l'impression 3D !
+
+Edit : Après avoir reçu mes pièces de rechange, j'ai pu finir mes tests.
+Et donc toujours le soucis.
+Dans un élan d'orignal j'ai tout simplement fait une calibration en "trichant" à fond ! (au taquet côté trop haut et remontée de 0.05x4 sur les deux autres, trop basses).
+
+La morale : tous les points évoqués précédemment gênent principalement la répétabilité, non la justesse.
+Il faut aller au plus simple, toujours winking smiley Ne pas se prendre trop la tête (même si les vérifications précédentes ne font pas de mal).
+
+Conclusion : pièce en cours d'impression, sans brim, sans colle, sans soucis \o/
